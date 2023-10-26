@@ -23,6 +23,7 @@ async function fakeFetch() {
         headers: "HEAD"
     })
 
+    // trás o tamanho do arquivo
     response.headers.get('content-length')
 }
 
