@@ -17,14 +17,28 @@ view.configureOnFileChange((file) => {
     }, 5000)
 })
 
+// modelo de fetch fake para imitar iteração do user
 async function fakeFetch() {
     const filePath = '/videos/frag_bunny.mp4'
     const response = await fetch(filePath, {
-        headers: "HEAD"
+        method: "HEAD"
     })
 
     // trás o tamanho do arquivo
-    response.headers.get('content-length')
+    console.log(response.headers.get('content-length'));
+    const file = new File([await response.blob()], filePath, {
+        type: "video/mp4",
+        lastModified: Date.now()
+    })
+
+    const event = new Event('change')
+    Reflect.defineProperty(
+        event,
+        'target',
+        { value: { files: [file] } }
+    )
+
+    document.getElementById('fileUpload').dispatchEvent(event)
 }
 
 fakeFetch()

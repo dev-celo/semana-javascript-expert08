@@ -30,14 +30,14 @@ export default class view {
         
     }
 
-    onChange(e) {
+    onChange = (fn) => {
         return (e) => {
             const file = e.target.files[0]
             const { name, size } = file
             fn(file)
 
             this.#txtfileName.innerText = name
-            this.#fileSize.innerText = parseBytesIntoMBAndGB(size)
+            this.#fileSize.innerText = this.parseBytesIntoMBAndGB(size)
         
             this.#fileInfo.classList.remove('hide')
             this.#fileUploadWrapper.classList.add('hide')
@@ -49,6 +49,6 @@ export default class view {
     }
 
     configureOnFileChange(fn) {
-        this.#fileUpload.addEventListener('change', onChange)
+        this.#fileUpload.addEventListener('change', this.onChange(fn))
     }
 }
